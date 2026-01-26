@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ chapter.title }} - {{ chapter.novel_title }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: #f5f5dc;
+            color: #333;
+            line-height: 1.8;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .chapter-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+        }
+        .chapter-title {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .novel-title {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .chapter-number {
+            font-size: 1em;
+            color: #999;
+        }
+        .chapter-content {
+            font-size: 1.2em;
+            text-indent: 2em;
+            margin-bottom: 30px;
+            line-height: 2;
+        }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .nav-btn {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        .nav-btn:hover {
+            opacity: 0.9;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            .chapter-content {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/novel/{{ chapter.novel_id }}" class="back-btn">← 返回目录</a>
+        
+        <div class="chapter-header">
+            <h1 class="chapter-title">{{ chapter.title }}</h1>
+            <div class="novel-title">{{ chapter.novel_title }}</div>
+            <div class="chapter-number">第 {{ chapter.chapter_number }} 章</div>
+        </div>
+        
+        <div class="chapter-content">
+            {{ content|replace('\n', '<br>')|safe }}
+        </div>
+        
+        <div class="navigation">
+            <a href="/novel/{{ chapter.novel_id }}" class="nav-btn">📚 返回目录</a>
+            <a href="/" class="nav-btn">🏠 返回书架</a>
+        </div>
+    </div>
+</body>
+</html>
