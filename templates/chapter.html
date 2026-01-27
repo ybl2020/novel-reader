@@ -104,7 +104,7 @@
         </div>
         
         <div class="chapter-content">
-            {{ content|replace('\n', '<br>')|safe }}
+            {{ content|replace('\\n', '<br>')|replace('\n', '<br>')|safe }}
         </div>
         
         <div class="navigation">
