@@ -3,99 +3,231 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>{{ chapter.title }} - {{ chapter.novel_title }}</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
         body {
-            font-family: 'Georgia', 'Times New Roman', serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'STHeiti', serif;
             background: #f5f5dc;
             color: #333;
             line-height: 1.8;
             min-height: 100vh;
-            padding: 20px;
+            padding: 15px;
         }
         .container {
             max-width: 800px;
             margin: 0 auto;
             background: white;
             border-radius: 10px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+        .back-btn {
+            padding: 9px 16px;
+            background: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.9em;
+            transition: opacity 0.2s ease;
+            white-space: nowrap;
+        }
+        .back-btn:active {
+            opacity: 0.7;
+        }
+        .chapter-nav-top {
+            display: flex;
+            gap: 8px;
         }
         .chapter-header {
             text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #ddd;
+            margin-bottom: 25px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #e0e0e0;
         }
         .chapter-title {
-            font-size: 1.8em;
+            font-size: 1.4em;
             color: #333;
             margin-bottom: 10px;
             font-weight: bold;
+            line-height: 1.4;
+            word-break: break-all;
         }
         .novel-title {
-            font-size: 1.2em;
+            font-size: 1em;
             color: #666;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
         }
         .chapter-number {
-            font-size: 1em;
+            font-size: 0.9em;
             color: #999;
         }
         .chapter-content {
-            font-size: 1.2em;
-            text-indent: 2em;
-            margin-bottom: 30px;
+            font-size: 1.1em;
             line-height: 2;
+            margin-bottom: 25px;
+            color: #2c2c2c;
+            word-wrap: break-word;
+            text-align: justify;
+        }
+        .chapter-content p {
+            text-indent: 2em;
+            margin-bottom: 0.8em;
         }
         .navigation {
             display: flex;
             justify-content: space-between;
-            margin-top: 30px;
+            align-items: center;
+            gap: 10px;
+            margin-top: 25px;
             padding-top: 20px;
-            border-top: 1px solid #eee;
+            border-top: 1px solid #e0e0e0;
+            flex-wrap: wrap;
         }
         .nav-btn {
-            padding: 12px 25px;
+            padding: 12px 20px;
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             text-decoration: none;
             border-radius: 8px;
-            font-weight: bold;
+            font-weight: 500;
+            font-size: 0.95em;
+            transition: opacity 0.2s ease;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
         }
-        .nav-btn:hover {
-            opacity: 0.9;
+        .nav-btn:active {
+            opacity: 0.8;
         }
-        .back-btn {
-            display: inline-block;
-            margin-bottom: 20px;
-            padding: 10px 20px;
-            background: #6c757d;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
+        .nav-btn.disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            pointer-events: none;
         }
-        @media (max-width: 768px) {
+        .nav-group {
+            display: flex;
+            gap: 8px;
+        }
+        
+        /* 平板适配 */
+        @media (min-width: 600px) and (max-width: 1024px) {
             .container {
-                padding: 20px;
-                margin: 10px;
+                padding: 30px;
             }
             .chapter-content {
-                font-size: 1.1em;
+                font-size: 1.15em;
+            }
+        }
+        
+        /* 手机横屏适配 */
+        @media (max-width: 768px) and (orientation: landscape) {
+            body {
+                padding: 12px;
+            }
+            .container {
+                padding: 20px;
+            }
+            .chapter-content {
+                font-size: 1em;
+                line-height: 1.9;
+            }
+        }
+        
+        /* 手机竖屏适配 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 18px;
+                border-radius: 8px;
+            }
+            .top-nav {
+                flex-wrap: wrap;
+            }
+            .chapter-title {
+                font-size: 1.3em;
+            }
+            .novel-title {
+                font-size: 0.95em;
+            }
+            .chapter-content {
+                font-size: 1.05em;
+                line-height: 1.9;
+            }
+            .navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .nav-btn, .nav-group {
+                width: 100%;
+            }
+            .nav-group {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        /* 小屏手机优化 */
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+            }
+            .container {
+                padding: 15px;
+            }
+            .back-btn {
+                padding: 8px 14px;
+                font-size: 0.85em;
+            }
+            .chapter-title {
+                font-size: 1.2em;
+            }
+            .chapter-content {
+                font-size: 1em;
+            }
+            .nav-btn {
+                padding: 11px 16px;
+                font-size: 0.9em;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <a href="/novel/{{ chapter.novel_id }}" class="back-btn">← 返回目录</a>
+        <div class="top-nav">
+            <a href="/novel/{{ chapter.novel_id }}" class="back-btn">← 返回目录</a>
+            <div class="chapter-nav-top">
+                {% if chapter.prev_id %}
+                <a href="/chapter/{{ chapter.prev_id }}" class="back-btn">上一章</a>
+                {% else %}
+                <span class="back-btn disabled" style="opacity: 0.5;">上一章</span>
+                {% endif %}
+                
+                {% if chapter.next_id %}
+                <a href="/chapter/{{ chapter.next_id }}" class="back-btn">下一章</a>
+                {% else %}
+                <span class="back-btn disabled" style="opacity: 0.5;">下一章</span>
+                {% endif %}
+            </div>
+        </div>
         
         <div class="chapter-header">
             <h1 class="chapter-title">{{ chapter.title }}</h1>
@@ -104,12 +236,29 @@
         </div>
         
         <div class="chapter-content">
-            {{ content|replace('\\n', '<br>')|replace('\n', '<br>')|safe }}
+            {% set paragraphs = content.replace('\\n', '\n').split('\n') %}
+            {% for para in paragraphs %}
+                {% if para.strip() %}
+                <p>{{ para.strip() }}</p>
+                {% endif %}
+            {% endfor %}
         </div>
         
         <div class="navigation">
             <a href="/novel/{{ chapter.novel_id }}" class="nav-btn">📚 返回目录</a>
-            <a href="/" class="nav-btn">🏠 返回书架</a>
+            <div class="nav-group">
+                {% if chapter.prev_id %}
+                <a href="/chapter/{{ chapter.prev_id }}" class="nav-btn">← 上一章</a>
+                {% else %}
+                <span class="nav-btn disabled">← 上一章</span>
+                {% endif %}
+                
+                {% if chapter.next_id %}
+                <a href="/chapter/{{ chapter.next_id }}" class="nav-btn">下一章 →</a>
+                {% else %}
+                <span class="nav-btn disabled">下一章 →</span>
+                {% endif %}
+            </div>
         </div>
     </div>
 </body>

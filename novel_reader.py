@@ -202,17 +202,37 @@ def read_chapter(chapter_id):
         WHERE c.id = ?
     ''', (chapter_id,))
     result = cursor.fetchone()
-    conn.close()
     
     if not result:
+        conn.close()
         return "章节信息不存在", 404
     
     chapter_info = {
+        'id': chapter_id,
         'title': result[0],
         'chapter_number': result[1],
         'novel_title': result[2],
         'novel_id': result[3]
     }
+    
+    # 获取上一章和下一章
+    cursor.execute('''
+        SELECT id FROM chapters 
+        WHERE novel_id = ? AND chapter_number < ?
+        ORDER BY chapter_number DESC LIMIT 1
+    ''', (chapter_info['novel_id'], chapter_info['chapter_number']))
+    prev_result = cursor.fetchone()
+    chapter_info['prev_id'] = prev_result[0] if prev_result else None
+    
+    cursor.execute('''
+        SELECT id FROM chapters 
+        WHERE novel_id = ? AND chapter_number > ?
+        ORDER BY chapter_number ASC LIMIT 1
+    ''', (chapter_info['novel_id'], chapter_info['chapter_number']))
+    next_result = cursor.fetchone()
+    chapter_info['next_id'] = next_result[0] if next_result else None
+    
+    conn.close()
     
     return render_template('chapter.html', content=content, chapter=chapter_info)
 
